@@ -614,4 +614,15 @@ MATH_H_FUNC void mat4x4_arcball(mat4x4 R, mat4x4 const M, vec2 const _a, vec2 co
 	float const angle = acos(vec3_mul_inner(a_, b_)) * s;
 	mat4x4_rotate(R, M, c_[0], c_[1], c_[2], angle);
 }
+
+typedef struct
+{
+	vec3 min, max;
+} aabb3;
+
+MATH_H_FUNC int aabb3_intersect(aabb3 a, aabb3 b)
+{
+	return (a.min[0] <= b.max[0] && a.max[0] >= b.min[0] && a.min[1] <= b.max[1] && a.max[1] >= b.min[1] && a.min[2] <= b.max[2] && a.max[2] >= b.min[2]);
+}
+
 #endif
