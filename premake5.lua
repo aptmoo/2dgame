@@ -16,14 +16,13 @@ project "game"
     -- Linker
     links
     {
-        "GL"
+
     }
 
     filter "system:linux"
         links { "dl", "m" }
         libdirs { "/usr/lib/" }
     
-
     -- Language
     language    "C"
     cdialect    "C17"
