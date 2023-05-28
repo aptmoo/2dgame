@@ -6,7 +6,9 @@
 typedef enum
 {
     ENTITY_NONE = 0,
-    ENTITY_TEST = 1,
+    ENTITY_TEST,
+    ENTITY_WORLD    // Only one of these is supposed to exist at id 0,
+    // and exists only so that other ents can refer to it as its owner.
 } entity_type_t;
 
 // TODO: Change order of data for optimization reasons
@@ -16,6 +18,7 @@ typedef struct
     BOOL used;
     char* name;
     usize id;
+    entity_type_t type;
 
     // Transform data
     vec3 origin;
