@@ -10,25 +10,43 @@ endif
 
 ifeq ($(config),debug)
   game_config = debug
+  glfw_config = debug
+  sokol_config = debug
 endif
 ifeq ($(config),release)
   game_config = release
+  glfw_config = release
+  sokol_config = release
 endif
 
-PROJECTS := game
+PROJECTS := game glfw sokol
 
 .PHONY: all clean help $(PROJECTS) 
 
 all: $(PROJECTS)
 
-game:
+game: glfw sokol
 ifneq (,$(game_config))
 	@echo "==== Building game ($(game_config)) ===="
 	@${MAKE} --no-print-directory -C . -f game.make config=$(game_config)
 endif
 
+glfw:
+ifneq (,$(glfw_config))
+	@echo "==== Building glfw ($(glfw_config)) ===="
+	@${MAKE} --no-print-directory -C . -f glfw.make config=$(glfw_config)
+endif
+
+sokol:
+ifneq (,$(sokol_config))
+	@echo "==== Building sokol ($(sokol_config)) ===="
+	@${MAKE} --no-print-directory -C . -f sokol.make config=$(sokol_config)
+endif
+
 clean:
 	@${MAKE} --no-print-directory -C . -f game.make clean
+	@${MAKE} --no-print-directory -C . -f glfw.make clean
+	@${MAKE} --no-print-directory -C . -f sokol.make clean
 
 help:
 	@echo "Usage: make [config=name] [target]"
@@ -41,5 +59,7 @@ help:
 	@echo "   all (default)"
 	@echo "   clean"
 	@echo "   game"
+	@echo "   glfw"
+	@echo "   sokol"
 	@echo ""
 	@echo "For more information, see https://github.com/premake/premake-core/wiki"

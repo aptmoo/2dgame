@@ -14,17 +14,17 @@ ifeq ($(config),debug)
   RESCOMP = windres
   TARGETDIR = bin
   TARGET = $(TARGETDIR)/2dgame.out
-  OBJDIR = bin-int/Debug
+  OBJDIR = bin-int/Debug/game
   DEFINES +=
-  INCLUDES += -Isrc
+  INCLUDES += -Isrc -Iext/sokol -Iext/glfw/include
   FORCE_INCLUDE +=
   ALL_CPPFLAGS += $(CPPFLAGS) -MD -MP $(DEFINES) $(INCLUDES)
   ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -std=c17
   ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS)
   ALL_RESFLAGS += $(RESFLAGS) $(DEFINES) $(INCLUDES)
-  LIBS += -ldl -lm
-  LDDEPS +=
-  ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib -s
+  LIBS += lib/libglfw.a lib/libsokol.a -ldl -lm -lGL
+  LDDEPS += lib/libglfw.a lib/libsokol.a
+  ALL_LDFLAGS += $(LDFLAGS) -Llib -L/usr/lib -s
   LINKCMD = $(CC) -o "$@" $(OBJECTS) $(RESOURCES) $(ALL_LDFLAGS) $(LIBS)
   define PREBUILDCMDS
   endef
@@ -41,17 +41,17 @@ ifeq ($(config),release)
   RESCOMP = windres
   TARGETDIR = bin
   TARGET = $(TARGETDIR)/2dgame.out
-  OBJDIR = bin-int/Release
+  OBJDIR = bin-int/Release/game
   DEFINES +=
-  INCLUDES += -Isrc
+  INCLUDES += -Isrc -Iext/sokol -Iext/glfw/include
   FORCE_INCLUDE +=
   ALL_CPPFLAGS += $(CPPFLAGS) -MD -MP $(DEFINES) $(INCLUDES)
   ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -std=c17
   ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS)
   ALL_RESFLAGS += $(RESFLAGS) $(DEFINES) $(INCLUDES)
-  LIBS += -ldl -lm
-  LDDEPS +=
-  ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib -s
+  LIBS += lib/libglfw.a lib/libsokol.a -ldl -lm -lGL
+  LDDEPS += lib/libglfw.a lib/libsokol.a
+  ALL_LDFLAGS += $(LDFLAGS) -Llib -L/usr/lib -s
   LINKCMD = $(CC) -o "$@" $(OBJECTS) $(RESOURCES) $(ALL_LDFLAGS) $(LIBS)
   define PREBUILDCMDS
   endef
@@ -68,7 +68,7 @@ OBJECTS := \
 	$(OBJDIR)/math.o \
 	$(OBJDIR)/strutils.o \
 	$(OBJDIR)/main.o \
-	$(OBJDIR)/scene.o \
+	$(OBJDIR)/entity.o \
 
 RESOURCES := \
 
@@ -136,7 +136,7 @@ $(OBJDIR)/strutils.o: src/common/strutils.c
 $(OBJDIR)/main.o: src/main/main.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(ALL_CFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
-$(OBJDIR)/scene.o: src/scene/scene.c
+$(OBJDIR)/entity.o: src/scene/entity.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(ALL_CFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 

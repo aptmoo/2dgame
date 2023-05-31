@@ -1,5 +1,5 @@
-#ifndef SC_SCENE_H
-#define SC_SCENE_H
+#ifndef ENTITY_H
+#define ENTITY_H
 #include "common/types.h"
 #include "common/math.h"
 
@@ -9,10 +9,11 @@ typedef enum
     ENTITY_TEST,
     ENTITY_WORLD    // Only one of these is supposed to exist at id 0,
     // and exists only so that other ents can refer to it as its owner.
+    // ID 0 is not valid in all other situations.
 } entity_type_t;
 
 // TODO: Change order of data for optimization reasons
-typedef struct
+typedef struct entity_s
 {
     // Entity info
     BOOL used;
@@ -33,33 +34,16 @@ typedef struct
     float weight;
     aabb3 bbox;
 
+    // Function pointers
+    void(*Think)(struct entity_s* self, f64 delta);
+
     // A void ptr so an entity can allocate private data,
     // Models, Script data, etc.
     void* data;
+
+    // Spatial grid data
+    struct entity_s* gprev;
+    struct entity_s* gnext;
 } entity_t;
-
-/**
- * @brief Init a scene, and allocate a certain amount of unused entities.
- * 
- * @param preallocEnts The amount of entities to be allocated early.
- * Useful if you already know how much ents a map has.
- */
-void SC_InitScene(usize preallocEnts);
-
-/**
- * @brief Allocate a new entity, or reuse one from before.
- * 
- * @return entity_t* 
- */
-entity_t* SC_GetNewEntity();
-
-/**
- * @brief Delete an entity by resetting it and setting used to false.
- * Does nothing when id is not valid.
- * Resets (again) when the entity at id is already set to unused.
- * 
- * @param id The id of the entity to be removed.
- */
-void SC_DeleteEntityID(usize id);
 
 #endif
