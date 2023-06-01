@@ -44,7 +44,7 @@ entity_t* ENT_GetNewEntity()
         }
     }
 
-    entities = realloc(entities, sizeof(numents + 1));
+    entities = realloc(entities, sizeof(entity_t) * (numents + 1));
     numents++;
 
     entity_t* ent = &entities[numents - 1]; /* I fucking love pointer arithmetic */

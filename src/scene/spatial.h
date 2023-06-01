@@ -17,4 +17,6 @@ void SP_RegisterEntity(entity_t* entity);
  */
 void SP_UpdateEntity(entity_t* entity);
 
+entity_t* SP_GetCell(vec3 pos);
+
 #endif

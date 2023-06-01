@@ -30,13 +30,17 @@ typedef struct entity_s
     quat angles;
     float scale;
 
+    /* Needed for grid */
+    vec3 oldOrigin;
+
     /* Linked list ptrs for the spatial grid */
     struct entity_s* gnext; 
     struct entity_s* gprev;
 } entity_t;
 
-extern entity_t* entities;
-extern u64 numents;
+// Todo: unnecesary?
+// extern entity_t* entities;
+// extern u64 numents;
 
 /**
  * @brief Inititialize the entity system. 

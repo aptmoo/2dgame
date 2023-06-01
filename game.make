@@ -69,6 +69,7 @@ OBJECTS := \
 	$(OBJDIR)/strutils.o \
 	$(OBJDIR)/main.o \
 	$(OBJDIR)/entity.o \
+	$(OBJDIR)/spatial.o \
 
 RESOURCES := \
 
@@ -137,6 +138,9 @@ $(OBJDIR)/main.o: src/main/main.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(ALL_CFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/entity.o: src/scene/entity.c
+	@echo $(notdir $<)
+	$(SILENT) $(CC) $(ALL_CFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/spatial.o: src/scene/spatial.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(ALL_CFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 
