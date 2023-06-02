@@ -2,12 +2,16 @@
 #include <stdio.h>
 
 #include "scene/entity.h"
+#include "scene/scene.h"
 #include "scene/spatial.h"
 
 int main(int argc, char const *argv[])
 {
-    ENT_InitEntities(0);
+    SC_Init();
     entity_t* e = ENT_GetNewEntity();
+    ENT_CallSpawnFunc(e);
+    e->type = ENT_NONE;
+    ENT_CallSpawnFunc(e);
     e->origin[0] = 100;
     e->origin[2] = 33;
     SP_RegisterEntity(e);

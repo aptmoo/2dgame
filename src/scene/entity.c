@@ -4,8 +4,32 @@
 #include <string.h>
 
 /* See entity.h */
-entity_t* entities;
-int numents;
+static entity_t* entities;
+static int numents;
+
+/* Empty funcs to avoid null ptr exceptions when touching/hurting another entity with no funcs */
+void EntityEmptyThink(entity_t *self, double delta){};
+void EntityEmptyTouch(entity_t *self, entity_t *other, touchtype_t type){};
+void EntityEmptyHurt(entity_t *self, entity_t *other, damagetype_t type){};
+void EntityEmptySpawn(entity_t *self)
+{
+    self->Think = EntityEmptyThink;
+    self->Touch = EntityEmptyTouch;
+    self->Hurt = EntityEmptyHurt;
+}
+
+typedef struct
+{
+    etype_t type;
+    void (*Spawn)(void *);
+} spawnfunc_t;
+
+spawnfunc_t spawnfuncs[] =
+{
+
+    {ENT_NONE, EntityEmptySpawn},
+    {ENT_INVALID, NULL}
+};
 
 void ENT_InitEntities(u64 intitialEnts)
 {
@@ -51,4 +75,38 @@ entity_t* ENT_GetNewEntity()
     memset(ent, 0, sizeof(entity_t));
     
     return ent;
+}
+
+void ENT_CallSpawnFunc(entity_t *entity)
+{
+    for(spawnfunc_t* func = spawnfuncs; func->type; func++)
+    {
+        if(func->type == entity->type)
+        {
+            func->Spawn(entity);
+        }
+    }
+}
+
+void ENT_InvalidateEntityID(u64 id)
+{
+    if(id > numents)
+        return;
+    
+    entity_t* ent = &entities[id];
+    
+    if(ent->gprev != NULL)
+        ent->gprev->gnext = ent->gnext;
+    
+    if(ent->gnext != NULL)
+        ent->gnext->gprev = ent->gprev;
+
+    memset(ent, 0, sizeof(entity_t));
+    ent->id = id;
+}
+
+void ENT_GetAllEntities(entity_t *ents, u64 *size)
+{
+    ents = &entities[0];
+    *size = numents;
 }
