@@ -1,41 +1,6 @@
 workspace "2dgame"
+	architecture "x86_64"
     configurations { "Debug", "Release" }
-
-project "game"
-    -- Input
-    files
-    {
-        "src/**.h", "src/**.c"
-    }
-
-    includedirs
-    {
-        "src/",
-        "ext/sokol/",
-        "ext/glfw/include/"
-    }
-
-    -- Linker
-    links
-    {
-        "glfw", "sokol"
-    }
-
-    libdirs { "./lib/" }
-
-    filter "system:linux"
-        links { "dl", "m", "GL" }
-        libdirs { "/usr/lib/" }
-    
-    -- Language
-    language    "C"
-    cdialect    "C17"
-
-    -- Output
-    kind        "ConsoleApp"
-    targetname  "2dgame.out"
-    targetdir   "./bin/"
-    objdir      "./bin-int/"
 
 project "glfw"
     -- Input
@@ -61,7 +26,6 @@ project "glfw"
         libdirs { "/usr/lib/" }
 
     -- Preprocessor
-
     filter "system:linux"
         defines { "_GLFW_X11" }
     
@@ -107,4 +71,40 @@ project "sokol"
     -- Output
     kind        "StaticLib"
     targetdir   "./lib/"
+
+project "game"
+    -- Input
+    files
+    {
+        "src/**.h", "src/**.c"
+    }
+
+    includedirs
+    {
+        "src/",
+        "ext/sokol/",
+        "ext/glfw/include/"
+    }
+
+    -- Linker
+    links
+    {
+        "glfw", "sokol"
+    }
+
+    libdirs { "lib/" }
+
+    filter "system:linux"
+        links { "dl", "m", "GL" }
+        libdirs { "/usr/lib/" }
+    
+    -- Language
+    language    "C"
+    cdialect    "C17"
+
+    -- Output
+    kind        "ConsoleApp"
+    targetname  "2dgame.out"
+    targetdir   "./bin/"
     objdir      "./bin-int/"
+

@@ -3,6 +3,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "e_spamconsole.h"
+
 /* See entity.h */
 static entity_t* entities;
 static int numents;
@@ -10,7 +12,7 @@ static int numents;
 /* Empty funcs to avoid null ptr exceptions when touching/hurting another entity with no funcs */
 void EntityEmptyThink(entity_t *self, double delta){};
 void EntityEmptyTouch(entity_t *self, entity_t *other, touchtype_t type){};
-void EntityEmptyHurt(entity_t *self, entity_t *other, damagetype_t type){};
+void EntityEmptyHurt(entity_t *self, entity_t *other, damagetype_t type, int amount){};
 void EntityEmptySpawn(entity_t *self)
 {
     self->Think = EntityEmptyThink;
@@ -26,7 +28,7 @@ typedef struct
 
 spawnfunc_t spawnfuncs[] =
 {
-
+    {ENT_SPAMCONSOLE, E_SpamConsoleSpawn},
     {ENT_NONE, EntityEmptySpawn},
     {ENT_INVALID, NULL}
 };

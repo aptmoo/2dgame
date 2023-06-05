@@ -9,27 +9,21 @@ ifndef verbose
 endif
 
 ifeq ($(config),debug)
-  game_config = debug
   glfw_config = debug
   sokol_config = debug
+  game_config = debug
 endif
 ifeq ($(config),release)
-  game_config = release
   glfw_config = release
   sokol_config = release
+  game_config = release
 endif
 
-PROJECTS := game glfw sokol
+PROJECTS := glfw sokol game
 
 .PHONY: all clean help $(PROJECTS) 
 
 all: $(PROJECTS)
-
-game: glfw sokol
-ifneq (,$(game_config))
-	@echo "==== Building game ($(game_config)) ===="
-	@${MAKE} --no-print-directory -C . -f game.make config=$(game_config)
-endif
 
 glfw:
 ifneq (,$(glfw_config))
@@ -43,10 +37,16 @@ ifneq (,$(sokol_config))
 	@${MAKE} --no-print-directory -C . -f sokol.make config=$(sokol_config)
 endif
 
+game: glfw sokol
+ifneq (,$(game_config))
+	@echo "==== Building game ($(game_config)) ===="
+	@${MAKE} --no-print-directory -C . -f game.make config=$(game_config)
+endif
+
 clean:
-	@${MAKE} --no-print-directory -C . -f game.make clean
 	@${MAKE} --no-print-directory -C . -f glfw.make clean
 	@${MAKE} --no-print-directory -C . -f sokol.make clean
+	@${MAKE} --no-print-directory -C . -f game.make clean
 
 help:
 	@echo "Usage: make [config=name] [target]"
@@ -58,8 +58,8 @@ help:
 	@echo "TARGETS:"
 	@echo "   all (default)"
 	@echo "   clean"
-	@echo "   game"
 	@echo "   glfw"
 	@echo "   sokol"
+	@echo "   game"
 	@echo ""
 	@echo "For more information, see https://github.com/premake/premake-core/wiki"

@@ -41,7 +41,7 @@ typedef struct entity_s
     /* Entity funcs */
     void(*Think)(struct entity_s* self, double delta);
     void(*Touch)(struct entity_s* self, struct entity_s* other, touchtype_t type);
-    void(*Hurt)(struct entity_s *self, struct entity_s *other, damagetype_t type);
+    void(*Hurt)(struct entity_s *self, struct entity_s *other, damagetype_t type, int amount);
 
     /* Status effect counters, decrease every tick */
     unsigned int fire, poison, cold;

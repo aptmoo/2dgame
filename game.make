@@ -19,12 +19,12 @@ ifeq ($(config),debug)
   INCLUDES += -Isrc -Iext/sokol -Iext/glfw/include
   FORCE_INCLUDE +=
   ALL_CPPFLAGS += $(CPPFLAGS) -MD -MP $(DEFINES) $(INCLUDES)
-  ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -std=c17
-  ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS)
+  ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64 -std=c17
+  ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m64
   ALL_RESFLAGS += $(RESFLAGS) $(DEFINES) $(INCLUDES)
   LIBS += lib/libglfw.a lib/libsokol.a -ldl -lm -lGL
   LDDEPS += lib/libglfw.a lib/libsokol.a
-  ALL_LDFLAGS += $(LDFLAGS) -Llib -L/usr/lib -s
+  ALL_LDFLAGS += $(LDFLAGS) -Llib -L/usr/lib -L/usr/lib64 -m64 -s
   LINKCMD = $(CC) -o "$@" $(OBJECTS) $(RESOURCES) $(ALL_LDFLAGS) $(LIBS)
   define PREBUILDCMDS
   endef
@@ -46,12 +46,12 @@ ifeq ($(config),release)
   INCLUDES += -Isrc -Iext/sokol -Iext/glfw/include
   FORCE_INCLUDE +=
   ALL_CPPFLAGS += $(CPPFLAGS) -MD -MP $(DEFINES) $(INCLUDES)
-  ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -std=c17
-  ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS)
+  ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64 -std=c17
+  ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m64
   ALL_RESFLAGS += $(RESFLAGS) $(DEFINES) $(INCLUDES)
   LIBS += lib/libglfw.a lib/libsokol.a -ldl -lm -lGL
   LDDEPS += lib/libglfw.a lib/libsokol.a
-  ALL_LDFLAGS += $(LDFLAGS) -Llib -L/usr/lib -s
+  ALL_LDFLAGS += $(LDFLAGS) -Llib -L/usr/lib -L/usr/lib64 -m64 -s
   LINKCMD = $(CC) -o "$@" $(OBJECTS) $(RESOURCES) $(ALL_LDFLAGS) $(LIBS)
   define PREBUILDCMDS
   endef
@@ -68,6 +68,7 @@ OBJECTS := \
 	$(OBJDIR)/math.o \
 	$(OBJDIR)/strutils.o \
 	$(OBJDIR)/main.o \
+	$(OBJDIR)/e_spamconsole.o \
 	$(OBJDIR)/entity.o \
 	$(OBJDIR)/scene.o \
 	$(OBJDIR)/spatial.o \
@@ -136,6 +137,9 @@ $(OBJDIR)/strutils.o: src/common/strutils.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(ALL_CFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/main.o: src/main/main.c
+	@echo $(notdir $<)
+	$(SILENT) $(CC) $(ALL_CFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/e_spamconsole.o: src/scene/e_spamconsole.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(ALL_CFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/entity.o: src/scene/entity.c
