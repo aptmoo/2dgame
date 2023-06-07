@@ -14,7 +14,7 @@ ifeq ($(config),debug)
   RESCOMP = windres
   TARGETDIR = bin
   TARGET = $(TARGETDIR)/2dgame.out
-  OBJDIR = bin-int/Debug/game
+  OBJDIR = bin-int/Debug
   DEFINES +=
   INCLUDES += -Isrc -Iext/sokol -Iext/glfw/include
   FORCE_INCLUDE +=
@@ -22,8 +22,8 @@ ifeq ($(config),debug)
   ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64 -std=c17
   ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m64
   ALL_RESFLAGS += $(RESFLAGS) $(DEFINES) $(INCLUDES)
-  LIBS += lib/libglfw.a lib/libsokol.a -ldl -lm -lGL
-  LDDEPS += lib/libglfw.a lib/libsokol.a
+  LIBS += lib/libsokol.a -lglfw -ldl -lm -lGL
+  LDDEPS += lib/libsokol.a
   ALL_LDFLAGS += $(LDFLAGS) -Llib -L/usr/lib -L/usr/lib64 -m64 -s
   LINKCMD = $(CC) -o "$@" $(OBJECTS) $(RESOURCES) $(ALL_LDFLAGS) $(LIBS)
   define PREBUILDCMDS
@@ -41,7 +41,7 @@ ifeq ($(config),release)
   RESCOMP = windres
   TARGETDIR = bin
   TARGET = $(TARGETDIR)/2dgame.out
-  OBJDIR = bin-int/Release/game
+  OBJDIR = bin-int/Release
   DEFINES +=
   INCLUDES += -Isrc -Iext/sokol -Iext/glfw/include
   FORCE_INCLUDE +=
@@ -49,8 +49,8 @@ ifeq ($(config),release)
   ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64 -std=c17
   ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m64
   ALL_RESFLAGS += $(RESFLAGS) $(DEFINES) $(INCLUDES)
-  LIBS += lib/libglfw.a lib/libsokol.a -ldl -lm -lGL
-  LDDEPS += lib/libglfw.a lib/libsokol.a
+  LIBS += lib/libsokol.a -lglfw -ldl -lm -lGL
+  LDDEPS += lib/libsokol.a
   ALL_LDFLAGS += $(LDFLAGS) -Llib -L/usr/lib -L/usr/lib64 -m64 -s
   LINKCMD = $(CC) -o "$@" $(OBJECTS) $(RESOURCES) $(ALL_LDFLAGS) $(LIBS)
   define PREBUILDCMDS
