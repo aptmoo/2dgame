@@ -45,6 +45,7 @@ project "glfw"
     -- Preprocessor
     filter "system:linux"
         defines { "_GLFW_X11" }
+        libdirs { "/usr/lib/ "}
 
     -- filter "system:windows"
     --     defines { "_GLFW_WIN32" }
@@ -65,6 +66,7 @@ project "glfw"
     filter "configurations:Release"
         defines { "NDEBUG" }
         optimize "On"
+
     -- Output
     kind        "StaticLib"
     targetdir   "%{wks.location}/lib/"
